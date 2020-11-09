@@ -1,0 +1,70 @@
+.task-box {
+    padding: 5px;
+}
+
+.task {
+    background: #212529;
+    padding: 5px;
+    padding-top: 0;
+    border-radius: 5px;
+}
+
+.task span {
+    font-size: 25px;
+}
+
+.task i {
+    font-size: 20px;
+    color: white;
+}
+
+.task p {
+    color: white;
+    margin: 0;
+}
+
+.newTask {
+    z-index: 1;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    height: 50px;
+    width: 50px;
+    padding: 0;
+}
+
+.newTask i {
+    font-size: 50px;
+}
+
+.task-edit {
+    cursor: pointer;
+}
+
+
+/* Task create */
+
+.background {
+    background: #343a40;
+    margin-top: 15px;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    color: white;
+}
+
+form textarea {
+    margin-bottom: 10px;
+}
+
+#removeTestCase, #addTestCase, #addHint, #removeHint {
+    transition: 0.3s;
+}
+
+#addTestCase:hover, #addHint:hover {
+    color: rgb(50, 220, 50);
+}
+
+#removeTestCase:hover, #removeHint:hover {
+    color: rgb(220, 50, 50);
+}

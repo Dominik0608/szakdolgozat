@@ -1,0 +1,11 @@
+.row, .alert {
+    margin-top: 15px;
+}
+
+.card {
+    background: #343a40;
+}
+
+label, .card-header {
+    color: white;
+}

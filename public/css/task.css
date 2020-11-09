@@ -1,0 +1,111 @@
+p {
+    margin: 0;
+}
+
+.row, .alert {
+    margin-top: 15px;
+}
+
+.card {
+    background: #343a40;
+}
+
+label, .card-header, p {
+    color: white;
+}
+
+.card {
+    margin-bottom: 15px;
+}
+
+.hint-box {
+    background: white;
+    border-radius: .25rem;
+    padding: .375rem .75rem;
+    border: 1px solid #ced4da;
+    margin-top: 5px;
+}
+
+.hint-box p {
+    color: #495057;
+    margin: 0;
+}
+
+label {
+    margin: 0;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 20px;
+}
+
+
+/* feladat leírása */
+
+.description {
+    margin: 15px 0;
+}
+
+.ide {
+    padding: 15px;
+    border: solid 1px #343a40;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+
+/* feladat megoldása */
+
+.test-button button {
+    background-color: #007bff;
+    color: white;
+}
+
+.test-button button:hover {
+    color: white;
+}
+
+#preloader {
+    width: 20px;
+    margin-left: 5px;
+}
+
+#outputs {
+    background-color: #212529;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.tests-box, .hints-box {
+    background-color: #212529;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.tests-box h2, .hints-box h2 {
+    color: #d2d2d2;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 24px;
+}
+
+.tests-box button, .hints-box button {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.hints-box .hint {
+    color: #fff;
+    padding-bottom: 10px;
+}
+
+#description {
+    margin-bottom: 15px;
+    color: #d2d2d2;
+}
+
+.task-timer {
+    font-size: 40px;
+}
