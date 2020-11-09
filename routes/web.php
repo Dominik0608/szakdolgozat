@@ -40,7 +40,7 @@ Route::get('/task/{id}/ide', [App\Http\Controllers\TaskController::class, 'ide']
 Route::post('/task/{id}/ide/test', [App\Http\Controllers\TaskController::class, 'test']);
 Route::post('/task/{id}/ide/submitTask', [App\Http\Controllers\TaskController::class, 'submitTask']);
 Route::post('/task/{id}/ide/hint', [App\Http\Controllers\TaskController::class, 'hint']);
-Route::get('/task/{id}/submit', [App\Http\Controllers\TaskController::class, 'submit']);
+Route::post('/task/{id}/sendFeedback', [App\Http\Controllers\TaskController::class, 'sendFeedback']);
 
 // Egyéb
 Route::get('/', function () {

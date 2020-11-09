@@ -21,11 +21,16 @@ class TaskController extends Controller
         
         $mytask = DB::table('usertask')->select('*')->whereRaw('taskid = ? AND userid = ?', [$id, auth()->user()->id ?? -1])->get()->first();
 
+        if ($task->createdBy == (auth()->user()->id ?? -1)) {
+            $feedbacks = DB::table('feedbacks')->join('users', 'users.id', '=', 'feedbacks.userid')->select('users.name', 'feedbacks.feedback', 'feedbacks.date')->where('taskid', '=', $id)->orderByDesc('feedbackid')->get();
+        }
+
         return view("layouts/task/task", [
             'task' => $task,
             'creator' => $creator ?? null,
             'usertask' => $usertask,
             'mytask' => $mytask ?? null,
+            'feedbacks' => $feedbacks ?? [],
         ]);
     }
 
@@ -283,5 +288,31 @@ class TaskController extends Controller
         $point -= (900 - $leftTime) / 900 * 25;
         
         return max($point, 0);
+    }
+
+    protected function sendFeedback(Request $request)
+    {
+        // üres textarea
+        if (strlen(trim($request->feedback)) == 0) {
+            $returnData = array("success" => false, "error" => "Üresen hagytad a szöveg mezőt!");
+            return json_encode($returnData);
+        }
+
+        // megvolt az 5 feedback a feladatra
+        $feedbacks = DB::table('feedbacks')->whereRaw('taskid = ? AND userid = ?', [$request->taskid, $request->userid])->get();
+        if (count($feedbacks) >= 5) {
+            $returnData = array("success" => false, "error" => "Egy felhasználó maximum 5 visszajelzést küldhet feladatonként!");
+            return json_encode($returnData);
+        }
+        
+
+        // sql insert
+        DB::table('feedbacks')->insert([
+            'taskid' => $request->taskid,
+            'userid' => $request->userid,
+            'feedback' => $request->feedback,
+        ]);
+        $returnData = array("success" => $request->feedback);
+        return json_encode($returnData);
     }
 }

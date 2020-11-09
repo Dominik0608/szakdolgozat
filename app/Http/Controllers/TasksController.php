@@ -13,7 +13,7 @@ class TasksController extends Controller
 
     protected function taskList()
     {
-        $tasks = DB::table('tasks')->orderBy('id', 'desc')->get();
+        $tasks = DB::table('tasks')->leftJoin('usertask', 'tasks.id', '=', 'usertask.taskid')->orderBy('id', 'desc')->get();
         foreach ($tasks as $key => $value) {
             $tasks[$key]->description = $this->descShorter($tasks[$key]->description);
         }
@@ -53,6 +53,7 @@ class TasksController extends Controller
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'createdBy' => auth()->user()->id ?? null,
+                'tags' => $this->tagsCorrector($data['tags']),
             ]
         );
 
@@ -82,5 +83,14 @@ class TasksController extends Controller
         }
         
         return redirect("/tasks");
+    }
+
+    private function tagsCorrector($tags)
+    {
+        $tempTags = array();
+        foreach(explode(",", $tags) as $value) {
+            $tempTags[] = trim($value);
+        }
+        return implode(",", $tempTags);
     }
 }

@@ -38,6 +38,15 @@
                             @enderror
                         </div>
                         <div class="form-group">
+                            <label for="tags">Címkék <i>(vesszővel elválasztva)</i></label>
+                            <input type="text" class="form-control @error('tags') is-invalid @enderror" id="tags" name="tags" value="{{ old('tags') }}">
+                            @error('tags')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="test_input[]">Ellenőrzés</label>
                             <textarea class="form-control" id="test_input[]" name="test_input[]" rows="1" placeholder="Test input" required></textarea>
                             <textarea class="form-control" id="test_output[]" name="test_output[]" rows="1" placeholder="Test output" required></textarea>

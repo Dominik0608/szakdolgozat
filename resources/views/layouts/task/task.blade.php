@@ -5,6 +5,7 @@
     <head>
         <title>{{config('app.title')}} - Feladat leírása</title>
         <link rel="stylesheet" href="{{asset('css\task.css')}}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <script>
         $(function () {
@@ -38,6 +39,18 @@
                             <div class="alert alert-danger" role="alert">
                                 Általad készített feladatot nem tudsz megoldani! <a href="/task/{{$task->id}}/edit"><strong>Feladat szerkesztése</strong></a>
                             </div>
+
+                            <div class="col-sm-12 feedback-box" style="max-height: 300px; overflow: auto;">
+                                @if (count($feedbacks) == 0)
+                                    Ehhez a feladathoz még nem érkezett visszajelzés.
+                                @else
+                                    <table><tbody>
+                                    @foreach ($feedbacks as $item)
+                                        <tr><td style="padding: 10px;"><i>({{$item->date}})</i> <a href="/user/{{$item->name}}"><strong>{{$item->name}}</strong></a>: {{$item->feedback}}<br></td></tr>
+                                    @endforeach
+                                    </tbody></table>
+                                @endif
+                            </div>
                         @else
                             <div class="col-sm-12 ide">
                                 @if ($mytask)
@@ -53,6 +66,16 @@
                                 <a href="/task/{{$task->id}}/ide"><button type="button" class="btn btn-primary">Feladat elkezdése</button></a>
                                 @endif
                             </div>
+                            
+                            @if ($mytask && $mytask->leftTime == 0)
+                                <div class="col-sm-12 ide">
+                                    <p>Visszajelzés küldése</p>
+                                    <textarea class="form-control" id="feedback" rows="3"></textarea>
+                                    <button id="sendFeedback" class="btn btn-primary" onclick="sendFeedback()">Küldés</button>
+                                    <div id="feedback-error" class="alert alert-danger" role="alert" style="display: none;"></div>
+                                    <div id="feedback-success" class="alert alert-success" role="alert" style="display: none;"></div>
+                                </div>
+                            @endif
                         @endif
                     @else
                         <div class="alert alert-danger" role="alert">
@@ -87,5 +110,36 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function sendFeedback() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: '/task/{{$task->id}}/sendFeedback',
+                        type: 'POST',
+                        data: {userid: '{{Auth::user()->id ?? -1}}', taskid: '{{$task->id}}', feedback: $('#feedback').val()},
+                        success: function(result){
+                            var result = JSON.parse(result);
+                            $('#feedback-error').css("display", "none");
+                            $('#feedback-success').css("display", "none");
+                            if (result.success) {
+                                $('#feedback-success').css("display", "block");
+                                $('#feedback-success').text("Visszajelzés beküldve!");
+                            } else {
+                                $('#feedback-error').css("display", "block");
+                                $('#feedback-error').text(result.error);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error)
+                        }
+                    })
+            }
+        </script>
     </body>
 </html>

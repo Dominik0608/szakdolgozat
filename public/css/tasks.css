@@ -68,3 +68,7 @@ form textarea {
 #removeTestCase:hover, #removeHint:hover {
     color: rgb(220, 50, 50);
 }
+
+.form-check-label {
+    color: white;
+}
