@@ -15,14 +15,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12" style="margin-top: 20px;">
-                    <!--
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="függvény, lista, változó, stb...">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">Keresés</button>
+                    <form action="tasks" method="get">
+                        <div class="input-group mb-3">
+                            <input name="tags" type="text" class="form-control" placeholder="függvény, lista, változó, stb...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Keresés</button>
+                            </div>
                         </div>
-                    </div>
-                    -->
+                    </form>
                     @if (Auth::check())
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="ownTasks">

@@ -11,9 +11,16 @@ class TasksController extends Controller
 {
     private $MAX_DESCRIPTION_CHARACTER = 100;
 
-    protected function taskList()
+    protected function taskList(Request $request)
     {
-        $tasks = DB::table('tasks')->leftJoin('usertask', 'tasks.id', '=', 'usertask.taskid')->orderBy('id', 'desc')->get();
+        $tasks = DB::table('tasks')->leftJoin('usertask', 'tasks.id', '=', 'usertask.taskid');   
+        $tags = $request->input('tags');
+        if ($tags) {
+            foreach($this->tagsCorrector($tags) as $tag) {
+                $tasks = $tasks->orWhere('tasks.tags', 'LIKE', '%'.$tag.'%');
+            }
+        }
+        $tasks = $tasks->orderBy('id', 'desc')->get();
         foreach ($tasks as $key => $value) {
             $tasks[$key]->description = $this->descShorter($tasks[$key]->description);
         }
@@ -91,6 +98,7 @@ class TasksController extends Controller
         foreach(explode(",", $tags) as $value) {
             $tempTags[] = trim($value);
         }
-        return implode(",", $tempTags);
+        //return implode(",", $tempTags);
+        return $tempTags;
     }
 }
