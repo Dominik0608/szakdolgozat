@@ -60,7 +60,7 @@ class TasksController extends Controller
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'createdBy' => auth()->user()->id ?? null,
-                'tags' => $this->tagsCorrector($data['tags']),
+                'tags' => implode(",", $this->tagsCorrector($data['tags'])),
             ]
         );
 

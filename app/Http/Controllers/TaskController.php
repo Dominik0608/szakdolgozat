@@ -11,6 +11,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TaskController extends Controller
 {
+    private $forbiddenExpressions = array(
+        "python" => array("mysql", "open", "os.")
+    );
+
     protected function index($id)
     {
         $task = DB::table('tasks')->select('*')->where('id', '=', $id)->get()->first();
@@ -198,24 +202,34 @@ class TaskController extends Controller
         $testCase = DB::table('testcase')->select('*')->where('id', '=', $request->testID)->get()->first();
         switch($request->lang) {
             case "python":
-                Storage::disk('local')->put('/userCodes/'.$request->userid.'.py', $request->code);
-                $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$request->userid.'.py']);
-                $process->setInput($testCase->test_input);
+                $foundForbiddenExpressions = $this->checkForbiddenExpressions($request->lang, $request->code);
+                if (empty($foundForbiddenExpressions)) {
+                    Storage::disk('local')->put('/userCodes/'.$request->userid.'.py', $request->code);
+                    $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
+                    $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$request->userid.'.py']);
+                    $process->setInput($testCase->test_input);
+                } else {
+                    $returnData = array("foundForbiddenExpressions" => true, "text" => "Tiltott kifejezés található a kódodban: " . implode(", ", $foundForbiddenExpressions));
+                    return json_encode($returnData); 
+                }
                 break;
             default:
                 return "hibás programozási nyelv";
         }
+        
         $process->setTimeout(10);
-        $process->run();
-
+        $run = $process->run();
+        
         if (!$process->isSuccessful()) {
-            $data->success = false;
-            $data->text = nl2br(utf8_encode($process->getErrorOutput()));
+            $data = array();
+            $data['success'] = false;
+            $data['text'] = nl2br(utf8_encode($process->getErrorOutput()));
+            $data['output'] = $process->getErrorOutput();
+            $data['test_output'] = $testCase->test_output;
             return json_encode($data);
         }
-
-        $returnData = array("success" => (trim(strval(rtrim($process->getOutput(), "\n"))) == trim(strval($testCase->test_output))), "text" => nl2br(utf8_encode($process->getOutput())), "a" => rtrim($process->getOutput(), "\n"), "b" => $testCase->test_output);
+        
+        $returnData = array("success" => (trim(strval(rtrim($process->getOutput(), "\n"))) == trim(strval($testCase->test_output))), "text" => nl2br(utf8_encode($process->getOutput())), "a" => rtrim($process->getOutput(), "\n"), "test_output" => $testCase->test_output);
         return json_encode($returnData);
     }
 
@@ -259,10 +273,15 @@ class TaskController extends Controller
         {
             switch($language) {
                 case "python":
-                    Storage::disk('local')->put('/userCodes/'.$userid.'.py', $code);
-                    $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                    $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$userid.'.py']);
-                    $process->setInput($testCases[$i]->validator_input);
+                    $foundForbiddenExpressions = $this->checkForbiddenExpressions($request->lang, $request->code);
+                    if (empty($foundForbiddenExpressions)) {
+                        Storage::disk('local')->put('/userCodes/'.$userid.'.py', $code);
+                        $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
+                        $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$userid.'.py']);
+                        $process->setInput($testCases[$i]->validator_input);
+                    } else {
+                        return 0;
+                    }
                     break;
                 default:
                     return "hibás programozási nyelv";
@@ -284,8 +303,10 @@ class TaskController extends Controller
             $point -= $usedHintIndex / $maxHint * 25;
         }
         
-        // idő (max 15 perc (900 mp))
-        $point -= (900 - $leftTime) / 900 * 25;
+        // idő (max 15 perc (900 mp)) (600 másodperc alatt vesz csak el pontot)
+        if ($leftTime < 600) {
+            $point -= (600 - $leftTime) / 600 * 25;
+        }
         
         return max($point, 0);
     }
@@ -314,5 +335,16 @@ class TaskController extends Controller
         ]);
         $returnData = array("success" => $request->feedback);
         return json_encode($returnData);
+    }
+
+    protected function checkForbiddenExpressions($language, $code)
+    {
+        $results = array();
+        foreach ($this->forbiddenExpressions[$language] as $key => $value) {
+            if (strpos($code, $value) !== false) {
+                $results[] = $value;
+            }
+        }
+        return $results;
     }
 }

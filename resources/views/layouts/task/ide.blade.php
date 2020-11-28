@@ -100,10 +100,14 @@ print(a)</div>
                                 $('#neededOutput').html('Helyes megoldás <i class="fas fa-check-circle"></i>');
                                 $('#test_'+testID).css("background-color", "#4f834f");
                             } else {
-                                $('#neededOutput').html("Elvárt output: " + json.b);
+                                if(json.foundForbiddenExpressions) {
+                                    $('#neededOutput').html("");
+                                } else {
+                                    $('#neededOutput').html("Elvárt output: " + json.test_output);
+                                }
                                 $('#test_'+testID).css("background-color", "#c53838");
                             }
-                            $('#output').html("Output: " + json.text);
+                            $('#output').html(json.text);
                             $("#preloader").remove();
                             isProcessRunning = false;
                         },
@@ -166,7 +170,6 @@ print(a)</div>
                             $('#hints').append('<div class="hint">#'+hintIndex+' '+result+'</div>');
                         },
                         error: function(xhr, status, error) {
-                            // remélhetőleg nem lesz hiba
                             console.log(error)
                         }
                     })
