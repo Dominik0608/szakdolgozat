@@ -44,8 +44,16 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <div id="editor">a = input()
-print(a)</div>
+                        {{-- <div id="editor">a = input()
+print(a)</div> --}}
+                        <div id="editor">lines = []
+while True:
+    line = input()
+    if line:
+        lines.append(line)
+    else:
+        break
+text = '\n'.join(lines)</div>
                         <div id="outputs">
                             <div><p id="output"></p></div>
                             <div><p id="neededOutput"></p></div>

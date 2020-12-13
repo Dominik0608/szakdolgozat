@@ -250,7 +250,7 @@ class TaskController extends Controller
             return json_encode($data);
         }
         
-        $returnData = array("success" => (trim(strval(rtrim($process->getOutput(), "\n"))) == trim(strval($testCase->test_output))), "text" => nl2br(utf8_encode($process->getOutput())), "a" => rtrim($process->getOutput(), "\n"), "test_output" => $testCase->test_output);
+        $returnData = array("success" => (trim(strval(rtrim($process->getOutput(), "\n"))) == trim(strval($testCase->test_output))), "text" => nl2br($process->getOutput()), "a" => rtrim($process->getOutput(), "\n"), "test_output" => $testCase->test_output);
         return json_encode($returnData);
     }
 

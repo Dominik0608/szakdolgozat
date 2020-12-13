@@ -28,6 +28,26 @@
                         <span>Mi alapján pontozza az oldal a feladat megoldást?</span>
                         <p>Minden feladaton maximum 100 pont érhető el.<br>Input-output párokért arányosan lehet szerezni 100 pontot. Ha például 4 validator pár van, akkor mindegyikért 25 pont jár.<br>Alapvetően minden feladatra 15 perc áll rendelkezésre. Az első 5 percért nem vesztünk pontot, azonban a maradék 10 percért arányosan maximum 25 pontot veszíthetünk.<br>A feladatoknál lehetőség van segítséget kérni, ennek száma a feladat készítőjétől függ. A segítségek felhasználásáért arányosan maximum 25 pontot lehet veszíteni.</p>
                     </section>
+                    <section>
+                        <span>Hogyan lehet több soros inputot beolvastatni? (Python)</span>
+                        <p>
+                            Pythonban két egyszerűbb módja van beolvastatni több sort:
+                            <br>
+                            <br>
+                            1. Az első inputnál megadjuk, hány sorból fog állni az input, majd egy véges ciklussal beolvassuk őket.
+                            <br>
+                            <img src="{{asset('image/python_input_1.png')}}" alt="Több sor beolvasása">
+                            <br>
+                            <br>
+                            2. Végtelen ciklusban olvassuk be az inputok, amíg nem kapunk üres értéket. Hátránya, hogy üres sor esetén (0 karakter hosszú string) megáll a ciklus.
+                            <br>
+                            <img src="{{asset('image/python_input_2.png')}}" alt="Több sor beolvasása">
+                        </p>
+                    </section>
+                    <section>
+                        <span></span>
+                        <p></p>
+                    </section>
                 </div>
             </div>
         </div>
