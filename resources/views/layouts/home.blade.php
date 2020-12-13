@@ -14,14 +14,14 @@
                 <div class="tutorial col-sm-12">
                     <section>
                         <span>Mi az oldal lényege?</span>
-                        <p>Kezdő, illetve haladó szintű programozók önkéntesen tudják fejleszteni tudásukat.</p>
+                        <p>Kezdő, illetve haladó szintű programozók önkéntesen tudják fejleszteni tudásukat. Az oldalon lehetőség van feladatokat létrehozni és megoldani. A megírt kódokat a weboldalon keresztül, online tudják futtatni, így nem szükséges a felhasználó részéről ehhez se erőforrás, se az adott nyelv fordítója.</p>
                     </section>
                     <section>
-                        <span>Mi a különbség a feladat készítésénél a test és a validator között?</span>
+                        <span>Mi a szerepe a feladat készítésénél a test és a validator mezőknek?</span>
                         <p>Mindkettő egy feladat megoldásánál az algoritmus tesztelésére szolgál. A "test" input-output párok a feladatot megoldó felhasználó számára megjelenített segítség. Ezekkel tudják tesztelni, hogy az algoritmusok a feladat szerint jól lett elkészítve. Ezzel szemben a "validator" input-output párok el vannak rejtve a megoldók elől, ezek a végső ellenőrzésre szolgálnak, ezek alapján kapják a pontokat. Ezzel elkerülhető az esetleges csalás.</p>
                     </section>
                     <section>
-                        <span>Mi a különbség a feladat készítésénél az input és az output között?</span>
+                        <span>Mi a szerepe a feladat készítésénél az input és az output mezőknek?</span>
                         <p>Az inputok a feladatok megoldásához szükséges bemeneti értékek. Ezekkel az értékekkel kell dolgoznia a feladatot megoldó felhasználónak és a feladat leírása szerint kell előállítani kimeneti értékeket, azaz outputokat.<br>Ha például a feladatunk egy számnak a négyzetét előállítani és az input 4, akkor az output 16 kell legyen.</p>
                     </section>
                     <section>

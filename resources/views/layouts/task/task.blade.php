@@ -28,7 +28,12 @@
                     </div>
                     @if ($creator)
                         <div class="col-sm-12 creator">
-                            <h2>Készítő: <a href="/user/{{$creator->name}}">{{$creator->name}}</a></h2>
+                            <h2>
+                                Készítő: <a href="/user/{{$creator->name}}">{{$creator->name}}</a>
+                                @if ($creator->currentBadge)
+                                    <img src="/badges/{{$creator->currentBadge}}.png" class="user-badge">
+                                @endif
+                            </h2>
                         </div>
                     @endif
                     <div class="col-sm-12 description">

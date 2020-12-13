@@ -8,6 +8,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Http\Controllers\BadgeController;
 
 class TaskController extends Controller
 {
@@ -19,7 +20,7 @@ class TaskController extends Controller
     {
         $task = DB::table('tasks')->select('*')->where('id', '=', $id)->get()->first();
         
-        $creator = DB::table('users')->select('name')->where('id', '=', $task->createdBy)->get()->first(); // feladat készítője
+        $creator = DB::table('users')->select('name', 'currentBadge')->where('id', '=', $task->createdBy)->get()->first(); // feladat készítője
 
         $usertask = DB::table('usertask')->join('users', 'usertask.userid', '=', 'users.id')->select('usertask.*', 'users.name')->whereRaw('taskid = ? AND points IS NOT NULL', [$id])->orderByDesc('usertask.points')->limit(10)->get(); // feladatot már megoldók listája
         
@@ -189,12 +190,32 @@ class TaskController extends Controller
         $usertask = DB::table('usertask')->select('*')->whereRaw('userid = ? AND taskid = ?', [auth()->user()->id ?? -1, $id])->get()->first();
         $hints = DB::table('hints')->select('*')->where('taskid', '=', $id)->get();
 
+        $exists = Storage::disk('public')->exists('task-img/30_1.jpg');
+
+        $images = Storage::url('public/task-img/30_1.jpg');
+
         return view('layouts/task/ide', [
             'task' => $task,
             'testCases' => $testCases,
             'usertask' => $usertask ?? [],
             'hints' => $hints ?? [],
+            'images' => $this->getTaskImages($task->id),
         ]);
+    }
+
+    private function getTaskImages($taskid)
+    {
+        $images = array();
+        $imgExtensions = array("jpeg", "png", "jpg", "gif");
+        for ($i=1; $i <= 3; $i++) {
+            foreach($imgExtensions as $ext) {
+                if (Storage::disk('public')->exists('task-img/'.$taskid.'_'.$i.'.'.$ext)) {
+                    $images[] = $taskid.'_'.$i.'.'.$ext;
+                    break;
+                }
+            }
+        }
+        return $images;
     }
 
     protected function test(Request $request)
@@ -241,15 +262,26 @@ class TaskController extends Controller
             return json_encode($returnData);
         }
 
+        $point = $this->pointCalculation($request->taskid, $request->userid, $request->code, $request->lang, $request->timeLeft ?? 0, $request->usedHintIndex, $request->maxHint);
+
         DB::table('usertask')->insert([
             'userid' => $request->userid,
             'taskid' => $request->taskid,
             'code' => $request->code,
             'language' => $request->lang,
-            'leftTime' => $request->leftTime ?? 0,
-            'points' => $this->pointCalculation($request->taskid, $request->userid, $request->code, $request->lang, $request->leftTime ?? 0, $request->usedHintIndex, $request->maxHint),
+            'leftTime' => $request->timeLeft ?? 0,
+            'points' => $point,
             'usedHintIndex' => $request->usedHintIndex ?? 0,
         ]);
+
+        if ($point > 0 && $request->lang == "python") {
+            BadgeController::tryToAddBadge($request->userid, 1);
+        }
+
+        if ($point >= 100) {
+            BadgeController::tryToAddBadge($request->userid, 2);
+        }
+        
 
         $returnData = array("success" => true);
         return json_encode($returnData);
@@ -261,7 +293,7 @@ class TaskController extends Controller
         return $hint->hint;
     }
 
-    private function pointCalculation($taskid = -1, $userid = -1, $code = "", $language = "python", $leftTime = 0, $usedHintIndex = 0, $maxHint = 0)
+    private function pointCalculation($taskid = -1, $userid = -1, $code = "", $language = "python", $timeLeft = 0, $usedHintIndex = 0, $maxHint = 0)
     {
         // hibátlan tesztek 100 pontot érnek | segítségek és idő max 25-25 pontot vehet el arányosan
         $point = 0;
@@ -273,7 +305,7 @@ class TaskController extends Controller
         {
             switch($language) {
                 case "python":
-                    $foundForbiddenExpressions = $this->checkForbiddenExpressions($request->lang, $request->code);
+                    $foundForbiddenExpressions = $this->checkForbiddenExpressions($language, $code);
                     if (empty($foundForbiddenExpressions)) {
                         Storage::disk('local')->put('/userCodes/'.$userid.'.py', $code);
                         $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
@@ -304,9 +336,16 @@ class TaskController extends Controller
         }
         
         // idő (max 15 perc (900 mp)) (600 másodperc alatt vesz csak el pontot)
-        if ($leftTime < 600) {
-            $point -= (600 - $leftTime) / 600 * 25;
+        if ($timeLeft < 600) {
+            $timeLeft = max($timeLeft, 0);
+            $point -= (600 - $timeLeft) / 600 * 25;
         }
+
+        DB::table('log')->insert(
+            [
+                'text' => $timeLeft,
+            ]
+        );
         
         return max($point, 0);
     }

@@ -11,6 +11,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/user/{username}', [App\Http\Controllers\ProfilesController::class, 'index']);
 Route::get('/user/{username}/edit', [App\Http\Controllers\ProfilesController::class, 'edit']);
 Route::patch('/user/{username}', [App\Http\Controllers\ProfilesController::class, 'update']);
+Route::post('/user/{id}/setCurrentBadge', [App\Http\Controllers\ProfilesController::class, 'setCurrentBadge']);
 
 // Feladatok
 Route::get('/tasks', [App\Http\Controllers\TasksController::class, 'taskList']);

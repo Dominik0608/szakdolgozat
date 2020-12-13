@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\TaskCreateRequest;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 
 class TasksController extends Controller
 {
@@ -54,7 +57,13 @@ class TasksController extends Controller
     public function taskUpload(TaskCreateRequest $request)
     {
         $data = request()->all(); // mindent visszaad
-
+        
+        $request->validate([
+            'kép_1' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // max 2mb
+            'kép_2' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'kép_3' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        
         $id = DB::table('tasks')->insertGetId(
             [
                 'title' => $data['title'],
@@ -87,6 +96,17 @@ class TasksController extends Controller
                     );
                 }
             }
+
+            for ($i=1; $i <= 3; $i++) { 
+                if ($request->has('kép_'.$i)) {
+                    $image = $request->file('kép_'.$i);
+                    $name = $id . "_" . $i;
+                    $folder = "task-img";
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadFile($image, $folder, 'public', $name);
+                    //$user->profile_image = $filePath;
+                }
+            }
         }
         
         return redirect("/tasks");
@@ -100,5 +120,13 @@ class TasksController extends Controller
         }
         //return implode(",", $tempTags);
         return $tempTags;
+    }
+
+    private function uploadFile(UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null)
+    {
+        $name = !is_null($filename) ? $filename : "ismeretlen";
+        $file = $uploadedFile->storeAs($folder, $name.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
+        //dd($file);
+        return $file;
     }
 }

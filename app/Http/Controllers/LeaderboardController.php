@@ -25,7 +25,7 @@ class LeaderboardController extends Controller
         $users = [];
         $users = DB::table('usertask')
             ->join('users', 'usertask.userid', '=', 'users.id')
-            ->selectRaw('users.name, count(*) as taskcount')
+            ->selectRaw('users.name, count(*) as taskcount, users.currentBadge')
             ->orderByDesc('taskcount')
             ->where('usertask.points', '>', '0')
             ->limit(10)
@@ -40,7 +40,7 @@ class LeaderboardController extends Controller
     {
         $users = DB::table('users')
             ->join('tasks', 'users.id', '=', 'tasks.createdBy')
-            ->selectRaw('users.name, count(tasks.id) as taskcount')
+            ->selectRaw('users.name, count(tasks.id) as taskcount, users.currentBadge')
             ->orderByDesc('taskcount')
             ->limit(10)
             ->get();

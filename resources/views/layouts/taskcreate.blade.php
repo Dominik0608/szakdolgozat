@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-md-8 background">
-                    <form method="POST" action="/tasks" id="taskCreateForm">
+                    <form method="POST" action="/tasks" id="taskCreateForm" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
                         <div class="card-header">Feladat készítése</div>
@@ -32,6 +32,29 @@
                             <label for="description">Leírás</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" value="{{ old('description') }}" rows="3" placeholder="Minden információ, amire a felhasználónak szüksége lehet." required>{{ old('description') }}</textarea>
                             @error('description')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Képek</label>
+                            <input type="file" class="@error('kép_1') is-invalid @enderror" id="kép_1" name="kép_1" value="{{ old('kép_1') }}" style="display: flex;">
+                            @error('kép_1')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <input type="file" class="@error('kép_2') is-invalid @enderror" id="kép_2" name="kép_2" value="{{ old('kép_2') }}" style="display: flex;">
+                            @error('kép_2')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            
+                            <input type="file" class="@error('kép_3') is-invalid @enderror" id="kép_3" name="kép_3" value="{{ old('kép_3') }}" style="display: flex;">
+                            @error('kép_3')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

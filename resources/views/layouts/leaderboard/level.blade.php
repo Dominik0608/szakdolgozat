@@ -35,22 +35,28 @@
                     </tr>
                     @foreach ($users as $key => $user)
                         <tr>
-                            @switch($key+1)
-                                @case(1)
-                                    <td class="td-name"><i class="fas fa-medal gold"></i> <a href="/user/{{$user->name}}"><strong>{{$user->name}}</strong></a></td>
-                                    @break
+                            <td class="td-name">
+                                @switch($key+1)
+                                    @case(1)
+                                        <i class="fas fa-medal gold"></i> 
+                                        @break
 
-                                @case(2)
-                                    <td class="td-name"><i class="fas fa-medal silver"></i> <a href="/user/{{$user->name}}"><strong>{{$user->name}}</strong></a></td>
-                                    @break
+                                    @case(2)
+                                        <i class="fas fa-medal silver"></i> 
+                                        @break
 
-                                @case(3)
-                                    <td class="td-name"><i class="fas fa-medal bronze"></i> <a href="/user/{{$user->name}}"><strong>{{$user->name}}</strong></a></td>
-                                    @break
+                                    @case(3)
+                                        <i class="fas fa-medal bronze"></i> 
+                                        @break
 
-                                @default
-                                    <td class="td-name"><div class="place">{{$key+1}}</div> <a href="/user/{{$user->name}}"><strong>{{$user->name}}</strong></a></td>
-                            @endswitch
+                                    @default
+                                        <div class="place">{{$key+1}}</div> 
+                                @endswitch
+                                <a href="/user/{{$user->name}}"><strong>{{$user->name}}</strong></a>
+                                @if ($user->currentBadge)
+                                    <img src="/badges/{{$user->currentBadge}}.png" class="user-badge">
+                                @endif
+                            </td>
                             <td class="td-level">{{$user->level}}</td>
                             <td class="td-school">{{$user->school ?? 'Ismeretlen'}}</td>
                         </tr>

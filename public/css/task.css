@@ -43,6 +43,11 @@ button {
 
 /* feladat leírása */
 
+.user-badge {
+    height: 39px;
+    vertical-align: sub;
+}
+
 .description {
     margin: 15px 0;
 }
@@ -72,6 +77,11 @@ button {
 
 
 /* feladat megoldása */
+
+.desc-img {
+    width: 100%;
+    margin-bottom: 15px;
+}
 
 .test-button button {
     background-color: #007bff;

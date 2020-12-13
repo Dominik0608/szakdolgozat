@@ -5,6 +5,12 @@
     <head>
         <title>{{config('app.title')}} - Regisztráció</title>
         <link rel="stylesheet" href="css/auth.css">
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script>
+            function onSubmit(token) {
+              document.getElementById("taskCreateForm").submit();
+            }
+        </script>
     </head>
     <body>
         <div class="container">
@@ -83,7 +89,12 @@
 
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                        {{-- domaint is be kell állítani a captchaban amikor kirakom élesre --}}
+                                        <button type="submit" class="btn btn-primary"
+                                            data-sitekey="6LfE__sZAAAAAJd1CGeWR-jlZeWgfEeQoFEvxoAF" 
+                                            data-callback='onSubmit' 
+                                            data-action='submit'
+                                        >
                                             {{ __('Regisztráció') }}
                                         </button>
                                     </div>

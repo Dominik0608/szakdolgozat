@@ -23,6 +23,9 @@
                         </div>
                         <div class="col-sm-12">
                             <p id="description">{{$task->description}}</p>
+                            @foreach ($images as $image)
+                                <img src="{{ asset('storage/task-img/'.$image) }}" alt="Desc img" class="desc-img">
+                            @endforeach
                         </div>
                         <div class="col-sm-12 tests-box">
                             <h2>Tesztek</h2>
@@ -134,7 +137,7 @@ print(a)</div>
                 $.ajax({
                     url: '/task/{{$task->id}}/ide/submitTask',
                     type: 'POST',
-                    data: {userid: '{{Auth::user()->id ?? -1}}', taskid: '{{$task->id}}', code: editor.getValue(), lang: "python", timeLeft: 0, usedHintIndex: hintIndex, maxHint: '{{count($hints)}}'},
+                    data: {userid: '{{Auth::user()->id ?? -1}}', taskid: '{{$task->id}}', code: editor.getValue(), lang: "python", timeLeft: timeLeft ?? 0, usedHintIndex: hintIndex, maxHint: '{{count($hints)}}'},
                     success: function(result){
                         var json = $.parseJSON(result);
                         if (json.success) {
