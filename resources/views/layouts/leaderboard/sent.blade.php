@@ -63,7 +63,7 @@
                         <tr style="background-color: #272946;">
                             <td class="td-name">
                                 <i class="fas fa-question"></i>
-                                <a href="/user/{{$userDatas->name}}"><strong>{{$userDatas->name ?? Auth::user()->name}}</strong></a>
+                                <a href="/user/{{$userDatas->name ?? Auth::user()->name}}"><strong>{{$userDatas->name ?? Auth::user()->name}}</strong></a>
                                 @if ($userDatas->currentBadge)
                                     <img src="/badges/{{$userDatas->currentBadge}}.png" class="user-badge">
                                 @endif
