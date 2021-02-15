@@ -10,7 +10,7 @@ class LeaderboardController extends Controller
 {
     protected function level()
     {
-        $users = DB::table('users')->select('*')->orderByDesc('experience')->limit(10)->get();
+        $users = DB::table('users')->select('*')->orderByDesc('experience')->orderBy('id')->limit(10)->get();
         foreach($users as $key => &$user)
         {
             $user->level = $this->getUserLevel($user->experience);
@@ -27,8 +27,10 @@ class LeaderboardController extends Controller
             ->join('users', 'usertask.userid', '=', 'users.id')
             ->selectRaw('users.name, count(*) as taskcount, users.currentBadge')
             ->orderByDesc('taskcount')
+			->orderBy('users.id')
             ->where('usertask.points', '>', '0')
             ->limit(10)
+            ->groupByRaw('users.name, users.currentBadge')
             ->get();
         //dd($users);
         return view('layouts/leaderboard/solved', [
@@ -42,7 +44,9 @@ class LeaderboardController extends Controller
             ->join('tasks', 'users.id', '=', 'tasks.createdBy')
             ->selectRaw('users.name, count(tasks.id) as taskcount, users.currentBadge')
             ->orderByDesc('taskcount')
+			->orderBy('users.id')
             ->limit(10)
+            ->groupByRaw('users.name, users.currentBadge')
             ->get();
         //$users = DB::select('select users.name, count(tasks.id) as taskcount from `users` inner join `tasks` on `users`.`id` = `tasks`.`createdBy` order by `taskcount` desc limit 10');
         return view('layouts/leaderboard/sent', [

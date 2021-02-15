@@ -87,7 +87,7 @@ class TaskController extends Controller
             'hint' => ['string'],
         ]);
         DB::table('hints')->insert(
-            ['taskid' => $id, 'hint' => $data['hint']]
+            ['taskid' => $id, 'hint' => strval($data['hint'])]
         );
         return $this->edit($id);
     }
@@ -111,7 +111,7 @@ class TaskController extends Controller
         
         DB::table('hints')
               ->where('id', $hintid)
-              ->update(['hint' => $data['hint']]);
+              ->update(['hint' => strval($data['hint'])]);
         } else {
             DB::table('hints')->where('id', '=', $hintid)->delete();
         }
@@ -226,8 +226,10 @@ class TaskController extends Controller
                 $foundForbiddenExpressions = $this->checkForbiddenExpressions($request->lang, $request->code);
                 if (empty($foundForbiddenExpressions)) {
                     Storage::disk('local')->put('/userCodes/'.$request->userid.'.py', $request->code);
-                    $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                    $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$request->userid.'.py']);
+                    // $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
+                    $python = 'python3'; // ki kéne rakni majd env-be
+                    // $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$request->userid.'.py']);
+                    $process = new Process([$python, '/var/www/szakdolgozat/storage/app/userCodes/'.$request->userid.'.py']);
                     $process->setInput($testCase->test_input);
                 } else {
                     $returnData = array("foundForbiddenExpressions" => true, "text" => "Tiltott kifejezés található a kódodban: " . implode(", ", $foundForbiddenExpressions));
@@ -308,8 +310,10 @@ class TaskController extends Controller
                     $foundForbiddenExpressions = $this->checkForbiddenExpressions($language, $code);
                     if (empty($foundForbiddenExpressions)) {
                         Storage::disk('local')->put('/userCodes/'.$userid.'.py', $code);
-                        $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                        $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$userid.'.py']);
+                        // $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
+                        $python = 'python3'; // ki kéne rakni majd valami konfig fájlba
+                        // $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$userid.'.py']);
+						$process = new Process([$python, '/var/www/szakdolgozat/storage/app/userCodes/'.$userid.'.py']);
                         $process->setInput($testCases[$i]->validator_input);
                     } else {
                         return 0;

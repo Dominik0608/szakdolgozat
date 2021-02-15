@@ -44,16 +44,16 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        {{-- <div id="editor">a = input()
-print(a)</div> --}}
-                        <div id="editor">lines = []
+                        <div id="editor">a = input()
+print(a)</div>
+                        {{-- <div id="editor">lines = []
 while True:
     line = input()
     if line:
         lines.append(line)
     else:
         break
-text = '\n'.join(lines)</div>
+text = '\n'.join(lines)</div> --}}
                         <div id="outputs">
                             <div><p id="output"></p></div>
                             <div><p id="neededOutput"></p></div>
@@ -135,6 +135,8 @@ text = '\n'.join(lines)</div>
         </script>
 
         <script>
+			let isTaskSubmitted = false;
+			
             function submitTask(){
                 $.ajaxSetup({
                     headers: {
@@ -147,6 +149,7 @@ text = '\n'.join(lines)</div>
                     type: 'POST',
                     data: {userid: '{{Auth::user()->id ?? -1}}', taskid: '{{$task->id}}', code: editor.getValue(), lang: "python", timeLeft: timeLeft ?? 0, usedHintIndex: hintIndex, maxHint: '{{count($hints)}}'},
                     success: function(result){
+						isTaskSubmitted = true;
                         var json = $.parseJSON(result);
                         if (json.success) {
                             window.location.href = '/task/{{$task->id}}?submitTask=true';
@@ -159,6 +162,12 @@ text = '\n'.join(lines)</div>
                     }
                 })
             }
+			
+			$(window).on("beforeunload", function() { 
+				if (!isTaskSubmitted) {
+					submitTask()
+				}
+			})
         </script>
 
         <script>
