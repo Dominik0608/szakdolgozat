@@ -226,15 +226,9 @@ class TaskController extends Controller
                 $foundForbiddenExpressions = $this->checkForbiddenExpressions($request->lang, $request->code);
                 if (empty($foundForbiddenExpressions)) {
                     Storage::disk('local')->put('/userCodes/'.$request->userid.'.py', $request->code);
-                    // $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                    //$python = 'python3'; // ki kéne rakni majd env-be
-                    // $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$request->userid.'.py']);
-                    //$process = new Process([$python, '/var/www/szakdolgozat/storage/app/userCodes/'.$request->userid.'.py']);
                     $python = env('PYTHON_COMPILER', 'python3');
                     $process = new Process([$python, env('PROCESS_FOLDER', '/var/www/').$request->userid.'.py']);
                     $process->setInput($testCase->test_input);
-                    //$returnData = array("foundForbiddenExpressions" => env('PROCESS_FOLDER', '/var/www/').$request->userid.'.py', "text" => env('PYTHON_COMPILER', 'python3'));
-                    //return json_encode($returnData); 
                 } else {
                     $returnData = array("foundForbiddenExpressions" => true, "text" => "Tiltott kifejezés található a kódodban: " . implode(", ", $foundForbiddenExpressions));
                     return json_encode($returnData); 
@@ -314,10 +308,6 @@ class TaskController extends Controller
                     $foundForbiddenExpressions = $this->checkForbiddenExpressions($language, $code);
                     if (empty($foundForbiddenExpressions)) {
                         Storage::disk('local')->put('/userCodes/'.$userid.'.py', $code);
-                        // $python = 'C:\Users\danko\AppData\Local\Programs\Python\Python37-32\python.exe'; // ki kéne rakni majd valami konfig fájlba
-                        //$python = 'python3'; // ki kéne rakni majd valami konfig fájlba
-                        // $process = new Process([$python, 'C:\wamp\www\blog\storage\app\userCodes/'.$userid.'.py']);
-						//$process = new Process([$python, '/var/www/szakdolgozat/storage/app/userCodes/'.$userid.'.py']);
                         $python = env('PYTHON_COMPILER', 'python3');
                         $process = new Process([$python, env('PROCESS_FOLDER', '/var/www/').$userid.'.py']);
                         $process->setInput($testCases[$i]->validator_input);

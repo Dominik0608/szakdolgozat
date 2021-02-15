@@ -63,12 +63,12 @@
                         <tr style="background-color: #272946;">
                             <td class="td-name">
                                 <i class="fas fa-question"></i>
-                                <a href="/user/{{$userDatas->name}}"><strong>{{$userDatas->name}}</strong></a>
+                                <a href="/user/{{$userDatas->name}}"><strong>{{$userDatas->name ?? Auth::user()->name}}</strong></a>
                                 @if ($userDatas->currentBadge)
                                     <img src="/badges/{{$userDatas->currentBadge}}.png" class="user-badge">
                                 @endif
                             </td>
-                            <td class="td-level">{{$userDatas->taskcount}}</td>
+                            <td class="td-level">{{$userDatas->taskcount ?? 0}}</td>
                         </tr>
                     @endif
                 </table>

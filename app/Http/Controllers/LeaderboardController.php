@@ -50,8 +50,8 @@ class LeaderboardController extends Controller
                 ->join('users', 'usertask.userid', '=', 'users.id')
                 ->selectRaw('users.name, count(*) as taskcount, users.currentBadge')
                 ->where('usertask.points', '>', '0')
-                ->groupByRaw('users.name, users.currentBadge')
                 ->where('users.name', auth()->user()->name)
+                ->groupByRaw('users.name, users.currentBadge')
                 ->first();
         }
 
@@ -79,8 +79,8 @@ class LeaderboardController extends Controller
             $userDatas = DB::table('users')
                 ->join('tasks', 'users.id', '=', 'tasks.createdBy')
                 ->selectRaw('users.name, count(tasks.id) as taskcount, users.currentBadge')
-                ->groupByRaw('users.name, users.currentBadge')
                 ->where('users.name', auth()->user()->name)
+                ->groupByRaw('users.name, users.currentBadge')
                 ->first();
         }
         
