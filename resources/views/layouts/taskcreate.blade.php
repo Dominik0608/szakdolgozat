@@ -12,6 +12,9 @@
         })
     </script>
     <body>
+        @if ( !Auth::check() )
+            <script>window.location = "/login";</script>
+        @endif
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-md-8 background">

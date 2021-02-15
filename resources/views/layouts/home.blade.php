@@ -36,12 +36,12 @@
                             <br>
                             1. Az első inputnál megadjuk, hány sorból fog állni az input, majd egy véges ciklussal beolvassuk őket.
                             <br>
-                            <img src="{{asset('image/python_input_1.png')}}" alt="Több sor beolvasása">
+                            <img class="viewerjs" src="{{asset('image/python_input_1.png')}}" alt="Több sor beolvasása">
                             <br>
                             <br>
                             2. Végtelen ciklusban olvassuk be az inputok, amíg nem kapunk üres értéket. Hátránya, hogy üres sor esetén (0 karakter hosszú string) megáll a ciklus.
                             <br>
-                            <img src="{{asset('image/python_input_2.png')}}" alt="Több sor beolvasása">
+                            <img class="viewerjs" src="{{asset('image/python_input_2.png')}}" alt="Több sor beolvasása">
                         </p>
                     </section>
                     <section>

@@ -16,58 +16,57 @@
     <body>
         <div class="container">
             <div class="row">
-                @if (Auth::check())
-                    <div class="col-md-6 col-sm-12">
-                        <div class="col-sm-12">
-                            <h1>{{$task->title}}</h1>
-                        </div>
-                        <div class="col-sm-12">
-                            <p id="description">{{$task->description}}</p>
-                            @foreach ($images as $image)
-                                <img src="{{ asset('storage/task-img/'.$image) }}" alt="Desc img" class="desc-img">
-                            @endforeach
-                        </div>
-                        <div class="col-sm-12 tests-box">
-                            <h2>Tesztek</h2>
-                            @foreach ($testCases as $key => $item)
-                                <div class="test-button">
-                                    <button id="test_{{$item->id}}" class="btn" onclick="test({{$item->id}})">Teszt #{{$key+1}}</button>
-                                </div>
-                            @endforeach
-                            <button id="sendTask" class="btn btn-danger" onclick="submitTask()">Feladat beküldése</button>
-                        </div>
-                        <div id="hints" class="col-sm-12 hints-box">
-                            @if (count($hints) > 0)
-                                <h2>Segítségek (összesen {{count($hints)}} db)</h2>
-                                <button id="getHint" class="btn btn-primary" onclick="getNewHint()">Új segítség kérése</button>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <div id="editor">a = input()
-print(a)</div>
-                        {{-- <div id="editor">lines = []
-while True:
-    line = input()
-    if line:
-        lines.append(line)
-    else:
-        break
-text = '\n'.join(lines)</div> --}}
-                        <div id="outputs">
-                            <div><p id="output"></p></div>
-                            <div><p id="neededOutput"></p></div>
-                        </div>
-
-                        <div class="task-timer">
-                            <p>Beküldésig: <span id="timer">??:??</span></p>
-                        </div>
-                    </div>
-                @else
-                    <div class="alert alert-danger" role="alert">
-                        A feladat megoldásához be kell jelentkezned!
-                    </div>
+                @if ( !Auth::check() )
+                    <script>window.location = "/login";</script>
+                @elseif (Auth::check() && Auth::user()->id == $task->createdBy)
+                    <script>window.location = "/task/{{$task->id}}";</script>
                 @endif
+                <div class="col-md-6 col-sm-12">
+                    <div class="col-sm-12">
+                        <h1>{{$task->title}}</h1>
+                    </div>
+                    <div class="col-sm-12">
+                        <p id="description">{{$task->description}}</p>
+                        @foreach ($images as $image)
+                            <img src="{{ asset('storage/task-img/'.$image) }}" alt="Desc img" class="desc-img viewerjs">
+                        @endforeach
+                    </div>
+                    <div class="col-sm-12 tests-box">
+                        <h2>Tesztek</h2>
+                        @foreach ($testCases as $key => $item)
+                            <div class="test-button">
+                                <button id="test_{{$item->id}}" class="btn" onclick="test({{$item->id}})">Teszt #{{$key+1}}</button>
+                            </div>
+                        @endforeach
+                        <button id="sendTask" class="btn btn-danger" onclick="submitTask()">Feladat beküldése</button>
+                    </div>
+                    <div id="hints" class="col-sm-12 hints-box">
+                        @if (count($hints) > 0)
+                            <h2>Segítségek (összesen {{count($hints)}} db)</h2>
+                            <button id="getHint" class="btn btn-primary" onclick="getNewHint()">Új segítség kérése</button>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div id="editor">a = input()
+print(a)</div>
+                    {{-- <div id="editor">lines = []
+while True:
+line = input()
+if line:
+    lines.append(line)
+else:
+    break
+text = '\n'.join(lines)</div> --}}
+                    <div id="outputs">
+                        <div><p id="output"></p></div>
+                        <div><p id="neededOutput"></p></div>
+                    </div>
+
+                    <div class="task-timer">
+                        <p>Beküldésig: <span id="timer">??:??</span></p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -104,8 +103,8 @@ text = '\n'.join(lines)</div> --}}
                         type: 'POST',
                         data: {userid: '{{Auth::user()->id ?? -1}}', testID: testID, code: editor.getValue(), lang: "python"},
                         success: function(result){
-                            var json = $.parseJSON(result);
                             console.log("result: " + result);
+                            var json = $.parseJSON(result);
                             
                             if (json.success) {
                                 $('#neededOutput').html('Helyes megoldás <i class="fas fa-check-circle"></i>');

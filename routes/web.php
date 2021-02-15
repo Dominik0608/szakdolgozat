@@ -7,25 +7,25 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); // ez lehet nem is kell lol
 
-// Felhasználói dolgok
+// Felhasználói dolgok (auth kész)
 Route::get('/user/{username}', [App\Http\Controllers\ProfilesController::class, 'index']);
 Route::get('/user/{username}/edit', [App\Http\Controllers\ProfilesController::class, 'edit']);
 Route::patch('/user/{username}', [App\Http\Controllers\ProfilesController::class, 'update']);
 Route::post('/user/{id}/setCurrentBadge', [App\Http\Controllers\ProfilesController::class, 'setCurrentBadge']);
 
-// Feladatok
+// Feladatok (auth kész)
 Route::get('/tasks', [App\Http\Controllers\TasksController::class, 'taskList']);
 Route::get('/tasks/create', [App\Http\Controllers\TasksController::class, 'taskCreate']);
-Route::get('/tasks/{page}', [App\Http\Controllers\TasksController::class, 'taskCreate']);
+// Route::get('/tasks/{page}', [App\Http\Controllers\TasksController::class, 'taskCreate']);
 Route::patch('/tasks', [App\Http\Controllers\TasksController::class, 'taskUpload']);
 
-// Ranglista
+// Ranglista (auth kész)
 Route::redirect('/leaderboard', '/leaderboard/level');
 Route::get('/leaderboard/level', [App\Http\Controllers\LeaderboardController::class, 'level']);
 Route::get('/leaderboard/solved', [App\Http\Controllers\LeaderboardController::class, 'solved']);
 Route::get('/leaderboard/sent', [App\Http\Controllers\LeaderboardController::class, 'sent']);
 
-// Feladat
+// Feladat (auth kész)
 Route::get('/task/{id}', [App\Http\Controllers\TaskController::class, 'index']);
 Route::get('/task/{id}/edit', [App\Http\Controllers\TaskController::class, 'edit']);
 Route::patch('/task/{id}/edit', [App\Http\Controllers\TaskController::class, 'update']);

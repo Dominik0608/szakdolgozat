@@ -15,8 +15,18 @@ class LeaderboardController extends Controller
         {
             $user->level = $this->getUserLevel($user->experience);
         }
+
+        $showUserDatas = auth()->user() ? $this->showUserDatas($users, auth()->user()) : false;
+
+        if ($showUserDatas) {
+            $userDatas = DB::table('users')->select('*')->where('name', auth()->user()->name)->first();
+            $userDatas->level = $this->getUserLevel($userDatas->experience);
+        }
+
         return view('layouts/leaderboard/level', [
             'users' => $users,
+            'showUserDatas' => $showUserDatas,
+            'userDatas' => $userDatas ?? [],
         ]);
     }
 
@@ -32,9 +42,23 @@ class LeaderboardController extends Controller
             ->limit(10)
             ->groupByRaw('users.name, users.currentBadge')
             ->get();
-        //dd($users);
+
+        $showUserDatas = auth()->user() ? $this->showUserDatas($users, auth()->user()) : false;
+
+        if ($showUserDatas) {
+            $userDatas = DB::table('usertask')
+                ->join('users', 'usertask.userid', '=', 'users.id')
+                ->selectRaw('users.name, count(*) as taskcount, users.currentBadge')
+                ->where('usertask.points', '>', '0')
+                ->groupByRaw('users.name, users.currentBadge')
+                ->where('users.name', auth()->user()->name)
+                ->first();
+        }
+
         return view('layouts/leaderboard/solved', [
             'users' => $users,
+            'showUserDatas' => $showUserDatas,
+            'userDatas' => $userDatas ?? [],
         ]);
     }
 
@@ -48,9 +72,22 @@ class LeaderboardController extends Controller
             ->limit(10)
             ->groupByRaw('users.name, users.currentBadge')
             ->get();
-        //$users = DB::select('select users.name, count(tasks.id) as taskcount from `users` inner join `tasks` on `users`.`id` = `tasks`.`createdBy` order by `taskcount` desc limit 10');
+        
+        $showUserDatas = auth()->user() ? $this->showUserDatas($users, auth()->user()) : false;
+
+        if ($showUserDatas) {
+            $userDatas = DB::table('users')
+                ->join('tasks', 'users.id', '=', 'tasks.createdBy')
+                ->selectRaw('users.name, count(tasks.id) as taskcount, users.currentBadge')
+                ->groupByRaw('users.name, users.currentBadge')
+                ->where('users.name', auth()->user()->name)
+                ->first();
+        }
+        
         return view('layouts/leaderboard/sent', [
             'users' => $users,
+            'showUserDatas' => $showUserDatas,
+            'userDatas' => $userDatas ?? [],
         ]);
     }
 
@@ -64,4 +101,16 @@ class LeaderboardController extends Controller
         return $level;
     }
 
+    private function showUserDatas($list, $user)
+    {
+        $showUserDatas = true;
+        
+        foreach($list as $item) {
+            if ($item->name == $user->name) {
+                $showUserDatas = false;
+            }
+        }
+        
+        return $showUserDatas;
+    }
 }
