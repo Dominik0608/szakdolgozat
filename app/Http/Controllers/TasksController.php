@@ -91,7 +91,7 @@ class TasksController extends Controller
                     DB::table('hints')->insert(
                         [
                             'taskid' => $id,
-                            'hint' => $data['hint'][$i],
+                            'hint' => strval($data['hint'][$i]),
                         ]
                     );
                 }
