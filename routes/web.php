@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); // ez lehet nem is kell lol
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); // ez lehet nem is kell
 
 // Felhasználói dolgok (auth kész)
 Route::get('/user/{username}', [App\Http\Controllers\ProfilesController::class, 'index']);

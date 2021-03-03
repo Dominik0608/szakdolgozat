@@ -259,7 +259,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(20) NOT NULL,
   `password` varchar(64) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `admin` tinyint(4) NOT NULL DEFAULT 0,
