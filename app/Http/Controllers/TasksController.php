@@ -16,7 +16,7 @@ class TasksController extends Controller
 
     protected function taskList(Request $request)
     {
-        $tasks = DB::table('tasks')->leftJoin('usertask', 'tasks.id', '=', 'usertask.taskid');   
+        $tasks = DB::table('tasks');   
         $tags = $request->input('tags');
         if ($tags) {
             foreach($this->tagsCorrector($tags) as $tag) {

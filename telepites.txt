@@ -1,4 +1,4 @@
-Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, composer, python
+Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, composer, python 3 (2-vel nem fog működni)
 
 1. Fájlok letöltése GitHub-ról (https://github.com/Dominik0608/szakdolgozat)
 2. Laravel függőségek letöltése (szakdolgozat mappájában cmd: composer install)
@@ -10,6 +10,8 @@ Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, compos
 4.4. DB_DATABASE=szakdolgozat (adatbázis neve)
 4.5. DB_USERNAME=szakdolgozat (adatbázis felhasználónév)
 4.6. DB_PASSWORD=passwd (adatbázis jelszó)
+4.7. PYTHON_COMPILER="python3" (python 3 fordító elérési útvonala, windows esetén ehhez hasonló: "C:\\Users\\danko\\AppData\\Local\\Programs\\Python\\Python39\\python.exe")
+4.8. PROCESS_FOLDER="/var/www/szakdolgozat/storage/app/userCodes/" (a fordítandó fájlok mentési helye, windows esetén ehhez hasonló: "F:\\wamp64\\www\\szakdolgozat\\storage\\app\\userCodes\\")
 5. laravel kulcs generálás (php artisan key:generate)
 6. adatbázisba importálni a szakdolgozat.sql fájlt
 7. Webszerver beállítása a megfelelő mappára, URL-re (a /public mappa kell legyen a DocumentRoot)
