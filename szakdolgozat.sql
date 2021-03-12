@@ -272,12 +272,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `password`, `remember_token`, `email`, `updated_at`, `created_at`, `admin`, `experience`, `school`, `currentBadge`) VALUES
-(1, 'Dominik', '$2y$10$tNzFeEBaG748LFloM2FPmuTRPzdvIhuay.IGpMSPbGhmJLcMRcEFC', 'fkrdSOmIXyKmGmKPofNzDlaR1qaugIHriFszMAKcJwwe34Imp1eI9rCpDyBP', 'danko.dominik123@gmail.com', '2021-01-02 18:21:11', '2020-10-08 13:02:35', 0, 10000, 'pte ttk ddd', 1),
-(2, 'asd', '$2y$10$Cz3201sEqtHu.1ESlsBWaup.Uw/vz4kHd/jRIQHFDPGF0tiFws24S', NULL, '123@qwe', '2020-10-08 14:24:48', '2020-10-08 14:24:48', 0, 0, NULL, 2),
-(3, 'qwe', '$2y$10$6VWoG5BBwnPCe8kDh95Ck.ppcQ26hKedzlgT91pJDD9mkQ.sZlq06', NULL, 'danko.dominik123@gmail.coma', '2020-10-08 14:28:56', '2020-10-08 14:28:56', 0, 0, NULL, NULL),
-(4, '123', '$2y$10$XU9XY7DefyK21bp492fAMezB.R4eAFKVAAaQ7tq3Li44l8ReZYc6K', NULL, 'danko.dominik123@gmail.comaa', '2020-10-08 14:32:16', '2020-10-08 14:32:16', 0, 1000, NULL, NULL),
-(5, '123123', '$2y$10$GCTJFdqnivdcPWbKQKY/nu0cFSEvdrxcPNM4nqd6V8JeiX0.NGz0e', NULL, '123123@gmail.com', '2020-12-06 20:25:09', '2020-12-06 20:25:09', 0, 0, NULL, NULL);
+INSERT INTO `users` (`id`, `name`, `password`, `remember_token`, `updated_at`, `created_at`, `admin`, `experience`, `school`, `currentBadge`) VALUES
+(1, 'Dominik', '$2y$10$tNzFeEBaG748LFloM2FPmuTRPzdvIhuay.IGpMSPbGhmJLcMRcEFC', 'fkrdSOmIXyKmGmKPofNzDlaR1qaugIHriFszMAKcJwwe34Imp1eI9rCpDyBP', '2021-01-02 18:21:11', '2020-10-08 13:02:35', 0, 10000, 'pte ttk ddd', 1),
+(2, 'asd', '$2y$10$Cz3201sEqtHu.1ESlsBWaup.Uw/vz4kHd/jRIQHFDPGF0tiFws24S', NULL, '2020-10-08 14:24:48', '2020-10-08 14:24:48', 0, 0, NULL, 2),
+(3, 'qwe', '$2y$10$6VWoG5BBwnPCe8kDh95Ck.ppcQ26hKedzlgT91pJDD9mkQ.sZlq06', NULL, '2020-10-08 14:28:56', '2020-10-08 14:28:56', 0, 0, NULL, NULL),
+(4, '123', '$2y$10$XU9XY7DefyK21bp492fAMezB.R4eAFKVAAaQ7tq3Li44l8ReZYc6K', NULL, '2020-10-08 14:32:16', '2020-10-08 14:32:16', 0, 1000, NULL, NULL),
+(5, '123123', '$2y$10$GCTJFdqnivdcPWbKQKY/nu0cFSEvdrxcPNM4nqd6V8JeiX0.NGz0e', NULL, '2020-12-06 20:25:09', '2020-12-06 20:25:09', 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
