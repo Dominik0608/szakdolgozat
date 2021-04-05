@@ -44,10 +44,6 @@
                             <img class="viewerjs" src="{{asset('image/python_input_2.png')}}" alt="Több sor beolvasása">
                         </p>
                     </section>
-                    <section>
-                        <span></span>
-                        <p></p>
-                    </section>
                 </div>
             </div>
         </div>

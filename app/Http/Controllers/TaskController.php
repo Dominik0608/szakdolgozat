@@ -186,7 +186,7 @@ class TaskController extends Controller
     protected function ide($id)
     {
         $task = DB::table('tasks')->select('*')->where('id', '=', $id)->get()->first();
-        $testCases = DB::table('testcase')->select('id')->where('taskid', '=', $id)->get();
+        $testCases = DB::table('testcase')->select('*')->where('taskid', '=', $id)->get();
         $usertask = DB::table('usertask')->select('*')->whereRaw('userid = ? AND taskid = ?', [auth()->user()->id ?? -1, $id])->get()->first();
         $hints = DB::table('hints')->select('*')->where('taskid', '=', $id)->get();
 

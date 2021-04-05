@@ -35,7 +35,9 @@
                         <h2>Tesztek</h2>
                         @foreach ($testCases as $key => $item)
                             <div class="test-button">
-                                <button id="test_{{$item->id}}" class="btn" onclick="test({{$item->id}})">Teszt #{{$key+1}}</button>
+                                <button id="test_{{$item->id}}" class="btn" style="margin: 0" onclick="test({{$item->id}})">Teszt #{{$key+1}}</button>
+                                <p><strong>Input:</strong> {{$item->test_input}}</p>
+                                <p style="margin-bottom: 15px;"><strong>Output:</strong> {{$item->test_output}}</p>
                             </div>
                         @endforeach
                         <button id="sendTask" class="btn btn-danger" onclick="submitTask()">Feladat beküldése</button>
