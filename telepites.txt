@@ -15,9 +15,9 @@ Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, compos
 5. laravel kulcs generálás (php artisan key:generate)
 6. adatbázisba importálni a szakdolgozat.sql fájlt
 7. Webszerver beállítása a megfelelő mappára, URL-re (a /public mappa kell legyen a DocumentRoot)
+8. Linket kell csinálni a storage-hoz (php artisan storage:link)
 Ha mindent jól csináltunk, az oldal hibátlanul betölt.
 
 Ismert hibák:
 főoldal betölt, többi oldal 404: rewrite modul engedélyezése (linux cmd: a2enmod rewrite && service apache2 restart)
 could not find driver: pdo_mysql nincs engedélyezve (/etc/php/7.3/cli/php.ini >> ;extension=pdo_mysql >> ; törlése)
-php artisan storage:link
