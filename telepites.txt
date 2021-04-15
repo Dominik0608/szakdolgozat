@@ -4,7 +4,7 @@ Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, compos
 2. Laravel függőségek letöltése (szakdolgozat mappájában cmd: composer install)
 3. `.env.example` fájl másolása `.env` névvel (laravelhez használt változók találhatók benne)
 4. Adatbázis bejelentkezési adatok megadása a `.env` fájlban
-4.1. DB_CONNECTION=mysql (csatlakozás típusa (MySQL-re kell tervezve a weboldal))
+4.1. DB_CONNECTION=mysql (csatlakozás típusa (MySQL-re lett tervezve a weboldal))
 4.2. DB_HOST=localhost (adatbázis címe)
 4.3. DB_PORT=3306 (adatbázis portja, rendszerint 3306 vagy 3307)
 4.4. DB_DATABASE=szakdolgozat (adatbázis neve)
@@ -17,6 +17,7 @@ Szükséges dolgok: webszerver (php (7.3 tesztelve)), adatbázis szerver, compos
 7. Webszerver beállítása a megfelelő mappára, URL-re (a /public mappa kell legyen a DocumentRoot)
 Ha mindent jól csináltunk, az oldal hibátlanul betölt.
 
+Ismert hibák:
 főoldal betölt, többi oldal 404: rewrite modul engedélyezése (linux cmd: a2enmod rewrite && service apache2 restart)
 could not find driver: pdo_mysql nincs engedélyezve (/etc/php/7.3/cli/php.ini >> ;extension=pdo_mysql >> ; törlése)
 php artisan storage:link
