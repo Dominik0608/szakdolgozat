@@ -21,3 +21,7 @@ Ha mindent jól csináltunk, az oldal hibátlanul betölt.
 Ismert hibák:
 főoldal betölt, többi oldal 404: rewrite modul engedélyezése (linux cmd: a2enmod rewrite && service apache2 restart)
 could not find driver: pdo_mysql nincs engedélyezve (/etc/php/7.3/cli/php.ini >> ;extension=pdo_mysql >> ; törlése)
+
+Elérhetőségeim:
+- Facebook: https://www.facebook.com/danko.dominik.3/
+- Email: danko.dominik123@gmail.com
